@@ -1,0 +1,11 @@
+--data_path_eval /data/evermotion_dataset/scenes
+--filenames_file_eval /data/evermotion_dataset/hypersim_val.txt
+--max_depth 10
+--min_depth 1e-3
+--n_bins 256
+--min_depth_eval 1e-3
+--max_depth_eval 10
+--weight_path checkpoints/train_depthor_31-Mar_19-nodebs12-tep50-4dcf6a46-67d6-4ed5-9f82-5ffacf171749_best.pt
+--dataset hypersim
+--save_pred
+--save_dir test_hypersim

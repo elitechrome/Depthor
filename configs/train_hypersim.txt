@@ -1,0 +1,23 @@
+--bs 12
+--workers 11
+--lr 0.0003
+--wd 0.1
+--div_factor 25
+--final_div_factor 100
+--epochs 50
+--name train_depthor
+--n_bins 256
+--norm linear
+--dataset hypersim
+--data_path /data/evermotion_dataset/scenes
+--filenames_file /data/evermotion_dataset/hypersim_train.txt
+--dataset_eval zju
+--data_path_eval /data/ZJUL5
+--filenames_file_eval /data/ZJUL5/data.json
+--min_depth 0.001
+--max_depth 10
+--validate_every 1200
+--min_depth_eval 1e-3
+--max_depth_eval 10
+--do_random_rotate
+--degree 2.5

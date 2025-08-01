@@ -1,0 +1,11 @@
+--data_path_eval /data/honor/real
+--filenames_file_eval /data/honor/real/data_split_test.txt
+--max_depth 10
+--min_depth 1e-3
+--n_bins 256
+--min_depth_eval 1e-3
+--max_depth_eval 10
+--weight_path checkpoints/train_depthor_04-Mar_23-nodebs12-tep50-8800c165-a6e5-4c09-bcfb-57f8e5da8d92_best.pt
+--dataset real
+--save_pred
+--save_dir test_real

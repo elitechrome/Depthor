@@ -1,0 +1,13 @@
+--data_path_eval /data
+--filenames_file_eval /data/nyudepthv2/nyu_val.txt
+--max_depth 10
+--min_depth 1e-3
+--n_bins 256
+--min_depth_eval 1e-3
+--max_depth_eval 10
+--weight_path checkpoints/train_depthor_04-Dec_19-nodebs12-tep50-ab472f39-90bf-4ca9-94ed-4fa8a373bcf5_best.pt
+--dataset nyu
+--save_pred
+--save_dir test_nyu
+
+
