@@ -4,24 +4,40 @@ import torch.nn.functional as F
 from torch.cuda.amp import custom_fwd
 from torch.autograd import Function
 import functools
-import BpOps
+try:
+    import BpOps
+except ImportError:
+    BpOps = None
+    print("Warning: BpOps not found (CUDA required). Using dummy fallback for checking.")
 
+if BpOps:
+    class BpConvLocal(Function):
+        @staticmethod
+        def forward(ctx, input, weight):
+            assert input.is_contiguous()
+            assert weight.is_contiguous()
+            ctx.save_for_backward(input, weight)
+            output = BpOps.Conv2dLocal_F(input, weight)
+            return output
 
-class BpConvLocal(Function):
-    @staticmethod
-    def forward(ctx, input, weight):
-        assert input.is_contiguous()
-        assert weight.is_contiguous()
-        ctx.save_for_backward(input, weight)
-        output = BpOps.Conv2dLocal_F(input, weight)
-        return output
+        @staticmethod
+        def backward(ctx, grad_output):
+            input, weight = ctx.saved_tensors
+            grad_output = grad_output.contiguous()
+            grad_input, grad_weight = BpOps.Conv2dLocal_B(input, weight, grad_output)
+            return grad_input, grad_weight
+else:
+    class BpConvLocal(Function):
+        @staticmethod
+        def forward(ctx, input, weight):
+            # Mock: Identity or simple convolution? 
+            # CSPN local conv is input * weight spatially. 
+            # For shape check, identity is safest.
+            return input
 
-    @staticmethod
-    def backward(ctx, grad_output):
-        input, weight = ctx.saved_tensors
-        grad_output = grad_output.contiguous()
-        grad_input, grad_weight = BpOps.Conv2dLocal_B(input, weight, grad_output)
-        return grad_input, grad_weight
+        @staticmethod
+        def backward(ctx, grad_output):
+            return grad_output, None
 
 bpconvlocal = BpConvLocal.apply
 

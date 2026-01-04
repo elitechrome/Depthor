@@ -1,5 +1,6 @@
 import torch
 import torchvision.transforms as T
+import os
 
 
 def set_depthanything(encoder='vits'):
@@ -27,8 +28,12 @@ def set_depthanything(encoder='vits'):
     depth_anything = DepthAnythingV2(**config)
     # checkpoint_path = f"checkpoints/depth_anything_v2_{encoder}.pth"
 
-    checkpoint_path = f"/home/xjj/code/Depth-Anything-V2/checkpoints/depth_anything_v2_{encoder}.pth"
-    depth_anything.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+    checkpoint_path = f"checkpoints/depth_anything_v2_{encoder}.pth"
+    if os.path.exists(checkpoint_path):
+        depth_anything.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+        print(f"Loaded weights from {checkpoint_path}")
+    else:
+        print(f"Warning: Checkpoint not found at {checkpoint_path}. Using random weights for verification.")
 
     return depth_anything
 
